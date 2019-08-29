@@ -2,8 +2,10 @@
 #import random
 #nltk.download('wordnet')
 #from nltk.corpus import wordnet
-x = input("list adj words")
+print(" Today we will talk about [Noun] who is currently living with [Noun].\n Being together has been a positive impact on their [adverb]\n")
+x = input("If you try adding less words it will be replaced with defaults\n, no more then 3 words will be used:\n")
 words = []
+new_word = []
 sentence = ["walking", "across", "swim", "San Francisco", "California", "Bay Area", "Riding", "bike", "run", "house", "pick", "change", "unlock", "love", "girlfriend"]
 def clense(y): #seperates words into individual strings
     word = ""
@@ -16,14 +18,26 @@ def clense(y): #seperates words into individual strings
     for j in range(0, len(l)):
         if(l[j] != "|"):
             word += l[j]
+            print(l[j])
         elif(l[j] == "|"):
             words.append(word)
             word = ""
     words.append(word)
+    size = len(words)
+    print(words)
+    g = 0
+    for x in words:   #Second filter until I fix first or use .pop() 8/29/19
+        if x == "":
+
+            print("detected")
+        else:
+            new_word.append(x)
+        g += 1
+    print(new_word)
 clense(x)
 
-print(words)
-userWords = len(words)
+print(new_word)
+userWords = len(new_word)
 pcWords = len(sentence)
 greater = 0
 least = 0
@@ -36,12 +50,12 @@ else:
 value = []
 if(userWords >= 3):
     for x in range(0, 3):
-        value.append(words[x])
+        value.append(new_word[x])
 else:
-    mark = len(words)
+    mark = len(new_word)
     for x in range(mark, 3):
-        words.append(None)
-    for x in words:
+        new_word.append(None)
+    for x in new_word:
         value.append(x)
 for x in value:
     if(x is None):
