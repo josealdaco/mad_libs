@@ -2,53 +2,95 @@
 #import random
 #nltk.download('wordnet')
 #from nltk.corpus import wordne
-
+import random
+from string import punctuation # link of library name:https://stackoverflow.com/questions/28056843/special-characters-in-string-literals
+import webbrowser # Library found from stackOverFlow, link:https://stackoverflow.com/questions/4302027/how-to-open-a-url-in-python user:aaronasterling
 from colorama import Fore, Back, Style
 
 check = False
 color_choice = []
 arr = []
+validation = set(punctuation)
+print(validation)
+validation.discard("'") # this could be used in a name
+print(validation)
+
 dic = {"BLACK": Fore.BLACK, "RED": Fore.RED, "GREEN": Fore.GREEN, "YELLOW": Fore.YELLOW, "BLUE": Fore.BLUE, "MAGENTA": Fore.MAGENTA, "CYAN": Fore.CYAN, "WHITE": Fore.WHITE}
 key = "WHITE"
+list3 = []
+
+file = open("words.txt", "r")
+for line in file:
+    x = line.split(",")
+    b = x[0]
+    c = len(b)-1
+    b = b[0:c]
+    list3.append(b)
+print(len(list3)) # file has x amount of usable words
 while(check is False):
+
+
+
+
     if len(color_choice) != 0:
         key = color_choice[len(color_choice) - 1]
         print(key)
-        print(dic.get(key, "WHITE") + "Today we will talk about [Noun] who is currently living with [Noun].\n Being together has been a positive impact on their [adverb]\n")
-    print(dic.get(key, "WHITE") + " Today we will talk about [Noun] who is currently living with [Noun].\n Being together has been a positive impact on their [adverb]\n")
-    x = input(dic.get(key, "WHITE") + "If you try adding less words it will be replaced with defaults\n, no more then 3 words will be used:\n")
+        print(dic.get(key, "WHITE") + "Today we will talk about [Noun] who is [Adjective] living with [Noun].\n Being together has been a positive impact on their [Verb]\n")
+    print(dic.get(key, "WHITE") + " Today we will talk about [Noun] who is [Adjective] living with [Noun].\n Being together has been a positive impact on their [Verb]\n")
+    x = input(dic.get(key, "WHITE") + "If you try adding less words it will be replaced with defaults\n, no more then 4 words will be used:\n If you also wish to fill out the missing parts with random words from our files you may do so by pressing the R button:\n")
     words = []
     new_word = []
+    index = []
     sentence = ["walking", "across", "swim", "San Francisco", "California", "Bay Area", "Riding", "bike", "run", "house", "pick", "change", "unlock", "love", "girlfriend"]
-    def clense(y): #seperates words into individual strings
-        word = ""
-        l = []
-        for x in range(0, len(y)):
-            if(y[x] != " "):
-                l.append(y[x])
-            elif(y[x] == " " and y[x-1] != "."):
-                l.append("|")
-        for j in range(0, len(l)):
-            if(l[j] != "|"):
-                word += l[j]
-                print(l[j])
-            elif(l[j] == "|"):
-                words.append(word)
-                word = ""
-        words.append(word)
-        size = len(words)
-        print(words)
-        g = 0
-        for x in words:   #Second filter until I fix first or use .pop() 8/29/19
-            if x == "":
-                print("detected")
-            else:
-                new_word.append(x)
+    if(x == "r" or x == "R"):
+        for n in range(0, 4):
+            new_word.append(list3[random.randint(0, len(list3))])
+    else:
+        def clense(y): #seperates words into individual strings
+            word = ""
+            l = []
+            for x in range(0, len(y)):
+                if(y[x] != " "):
+                    l.append(y[x])
+                elif(y[x] == " " and y[x-1] != "."):
+                    l.append("|")
+            for j in range(0, len(l)):
+                if(l[j] != "|"):
+                    word += l[j]
+                    print(l[j])
+                elif(l[j] == "|"):
+                    words.append(word)
+                    word = ""
+            words.append(word)
+            g = 0
+            for x in words:   #Second filter until I fix first or use .pop() 8/29/19
+                if x == "":
+                    print("detected")
+                else:
+                    new_word.append(x)
                 g += 1
-                print(new_word)
-    clense(x)
+            print(new_word)
+            return new_word
+        def validate(filter, x):
+            for y in filter(x):
+                for j in range(0, len(y)):
+                    for l in validation:
+                        if(y[j] == l):
+                            print("WORD CANNOT CONTAIN SPECIAL CHARACTERS")
+                            print(y)
+                            index.append(y)
+        def remove():
 
-    print(new_word)
+            for x in index:
+                for y in new_word:
+                    if(x == y):
+                        new_word.pop(new_word.index(x))
+                        print("REMOVED")
+
+    validate(clense, x)
+    remove()
+
+    print("THE ENTIRE LIST:", new_word)
     userWords = len(new_word)
     pcWords = len(sentence)
     greater = 0
@@ -60,12 +102,12 @@ while(check is False):
         greater = userWords
         least = pcWords
     value = []
-    if(userWords >= 3):
-        for x in range(0, 3):
+    if(userWords >= 4):
+        for x in range(0, 4):
             value.append(new_word[x])
     else:
         mark = len(new_word)
-        for x in range(mark, 3):
+        for x in range(mark, 4):
             new_word.append(None)
         for x in new_word:
             value.append(x)
@@ -73,17 +115,26 @@ while(check is False):
         if(x is None):
             x = "NULL"
     val = value[0]
-    val2 = value[1]
+    val2 = value[1] #Adjective
     val3 = value[2]
+    val4 = value[3] #Verb
+    #Randomising nouns
 
-    sentence_choice = dic.get(key, "WHITE") + f""" Today we will talk about {val} who is currently living with {val2}.\n Being together has been a positive impact on their {val3}"""
+    for x in range(0, random.randint(1, len(value))):
+        rand = random.randint(0, 2)
+        rand2 = random.randint(0, 2)
+        if(rand != 1 and rand != rand2 and rand2 != 1):
+            val = value[rand]
+            val3 = value[rand2]
+
+    sentence_choice = dic.get(key, "WHITE") + f""" Today we will talk about {val} who is {val2} living with {val3}.\n Being together has been a positive impact on their {val4}"""
 # for x in range(0,random.randint(0,greater)):
 # sentence_choice += sentence[random.randint(0,len#(sentence) - 1)] + " " +  words[random.randint(0,len(words)# - 1)].upper() + " "
     print(sentence_choice)
     choose = False
     choose2 = True
     while(choose == False):
-        print(dic.get(key, "WHITE") + """ TYPE S TO STOP, TYPE R TO RESTART PROGRAM, TYPE C FOR COLOR TERMINAL OR D FOR DEFAULT SETTINGS,   \n IF YOU CHOOSE D THIS WILL PROMPT AGAIN\n """)
+        print(dic.get(key, "WHITE") + """ TYPE S TO STOP, TYPE R TO RESTART PROGRAM, TYPE C FOR COLOR TERMINAL, W FOR WEBPAGE OR D FOR DEFAULT SETTINGS,   \n IF YOU CHOOSE D THIS WILL PROMPT AGAIN\n """)
         an = input().upper()
         print(an)
         if an == 'S':
@@ -97,7 +148,8 @@ while(check is False):
             choose2 = False
         elif an == 'D':
             key = "WHITE"
-            color_choice = []
+        elif an == 'W':
+            webbrowser.open_new_tab('http://box5377.temp.domains/~shapesur/madlibs/character_resume.html') # Online Custom ad_libs website
         else:
             print("YOU DID NOT TYPE ANYTHING OR ANYTHING RELEVANT, NONE CASE SENSTITIVE")
         while(choose2 is False):
