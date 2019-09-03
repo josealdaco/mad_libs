@@ -7,3 +7,7 @@ INSTRUCTIONS FOR mad_libs
 4. If C you will be able to choose a text color, does not have to be in caps but it must be spelled correctly
 5. If you choose D it will reset the colors but you will be prompted to choose another option.
 6. ALL STRINGS CANNOT CONTAIN ANY SPECIAL CHARACTERS OR NUMBERS OTHER THAN ' for Max's. Otherwise it will delete the word and be replaced with the default [None] in the story
+
+
+
+YOU MUST COPY AND PASTE ALL FOLDERS INCLUDED IN THE REPOS, OTHERWISE IT WILL GIVE AN ERROR OF A MISSING LIBRARY.
